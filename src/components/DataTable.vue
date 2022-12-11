@@ -26,15 +26,9 @@
                             :class="[!sortedbyASC ? 'mirrorVertSpan' : 'normalVertSpan']">V</span></td>
                 </tr>
                 <tr v-for="(item, index) in collected" :key="index">
-                    <td
-                    @dblclick="removeFromGeo"
-                    class="cities removeAble">{{ item.city }}</td>
-                    <td
-                    @dblclick="removeFromGeo"
-                    class="mins removeAble">{{ Math.min(...item.day_min) }}</td>
-                    <td
-                    @dblclick="removeFromGeo"
-                    class="maxs removeAble">{{ Math.max(...item.day_max) }}</td>
+                    <td @dblclick="removeFromGeo" class="cities removeAble">{{ item.city }}</td>
+                    <td @dblclick="removeFromGeo" class="mins removeAble">{{ Math.min(...item.day_min) }}</td>
+                    <td @dblclick="removeFromGeo" class="maxs removeAble">{{ Math.max(...item.day_max) }}</td>
                 </tr>
                 <tr>
                     <td @click="addCity" class="clickable"><b> + </b></td>
@@ -44,7 +38,9 @@
                 <tr v-show="adding">
                     <td class="hovered"><b>City</b></td>
                     <td class="hovered"><b>Latitude</b></td>
-                    <td class="hovered"><d>Longitude</d></td>
+                    <td class="hovered">
+                        <d>Longitude</d>
+                    </td>
                 </tr>
                 <tr v-show="adding" v-for="(item, index) in add" :key="index" @click="addToGeo($event)">
                     <td class="hovered addAble">{{ item.city }}</td>
@@ -61,8 +57,6 @@
 <script>
 
 import data from "@/assets/data";
-// import ContextMenu from './components/ContextMenu/ContextMenu';
-// import ContextMenuItem from './components/ContextMenu/ContextMenuItem';
 
 export default {
     name: "DataTable",
@@ -89,11 +83,7 @@ export default {
 
                 this.collected = [];
 
-
                 for (let index in newValue) {
-                    console.log("index: ", index, "entry: ", newValue[index]);
-
-
 
                     fetch(
                         url +
@@ -102,8 +92,6 @@ export default {
                     )
                         .then((res) => res.json())
                         .then((data) => {
-                            // this.daily = data
-                            console.log('inside fetch: ', newValue[index].city)
                             let obj_item = {};
                             obj_item.city = newValue[index].city;
                             obj_item.day_min = data.daily.temperature_2m_min
@@ -120,7 +108,6 @@ export default {
         const params = "&timezone=auto&daily=temperature_2m_max,temperature_2m_min";
 
         for (let index in this.geo) {
-            console.log("index: ", index, "entry: ", this.geo[index]);
 
             fetch(
                 url +
@@ -129,8 +116,6 @@ export default {
             )
                 .then((res) => res.json())
                 .then((data) => {
-                    // this.daily = data
-                    console.log('inside fetch: ', this.geo[index].city)
                     let obj_item = {};
                     obj_item.city = this.geo[index].city;
                     obj_item.day_min = data.daily.temperature_2m_min
@@ -170,7 +155,6 @@ export default {
             }
         },
         addCity() {
-            console.log('suggest some cities to user')
             this.adding = !this.adding
         },
         showAdd() {
@@ -181,16 +165,13 @@ export default {
         },
         addToGeo(event) {
 
-            console.log(event.target)
             let addCity = event.target.parentElement.firstElementChild.innerText;
-            console.log(addCity)
+
             for (let index in this.add) {
-                console.log(this.add[index].city)
 
                 if (this.add[index].city === addCity) {
                     this.geo.push(this.add[index])
                     this.add.splice(index, 1)
-                    console.log('city is found')
                 }
 
             }
@@ -202,23 +183,19 @@ export default {
         },
         removeFromGeo(event) {
 
-console.log(event.target)
-let removeCity = event.target.parentElement.firstElementChild.innerText;
-console.log(removeCity)
-for (let index in this.geo) {
+            let removeCity = event.target.parentElement.firstElementChild.innerText;
 
-    console.log(this.geo[index].city)
+            for (let index in this.geo) {
 
-    if (this.geo[index].city === removeCity) {
-        this.add.push(this.geo[index])
-        this.geo.splice(index, 1)
-        console.log('city is found')
-    }
+                if (this.geo[index].city === removeCity) {
+                    this.add.push(this.geo[index])
+                    this.geo.splice(index, 1)
+                }
 
-}
-this.showAdd()
-this.reload()
-},
+            }
+            this.showAdd()
+            this.reload()
+        },
 
 
     },
@@ -226,11 +203,10 @@ this.reload()
 </script>
 
 <style scoped>
-
-#right-click-menu{
+#right-click-menu {
     background: #FAFAFA;
     border: 1px solid #BDBDBD;
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
     display: block;
     list-style: none;
     margin: 0;
@@ -266,7 +242,7 @@ td:hover {
     background-color: rgb(240, 246, 252);
     color: rgb(22, 27, 34);
     box-shadow: inset 0 0 1vh 1vh rgba(22, 27, 34, 0.66);
-    
+
 }
 
 td span {
