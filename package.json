@@ -1,8 +1,11 @@
 {
   "name": "weather-app",
   "version": "0.1.0",
+  "homepage": "https://alex-briz.github.io/cv",
   "private": true,
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
