@@ -206,7 +206,8 @@ console.log(event.target)
 let removeCity = event.target.parentElement.firstElementChild.innerText;
 console.log(removeCity)
 for (let index in this.geo) {
-    console.log(this.add[index].city)
+
+    console.log(this.geo[index].city)
 
     if (this.geo[index].city === removeCity) {
         this.add.push(this.geo[index])
