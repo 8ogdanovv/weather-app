@@ -27,8 +27,8 @@
                 </tr>
                 <tr v-for="(item, index) in collected" :key="index">
                     <td @dblclick="removeFromGeo" class="cities removeAble">{{ item.city }}</td>
-                    <td @dblclick="removeFromGeo" class="mins removeAble">{{ Math.min(...item.day_min) }}</td>
-                    <td @dblclick="removeFromGeo" class="maxs removeAble">{{ Math.max(...item.day_max) }}</td>
+                    <td @dblclick="removeFromGeo" class="mins removeAble">{{ item.day_min }}</td>
+                    <td @dblclick="removeFromGeo" class="maxs removeAble">{{ item.day_max }}</td>
                 </tr>
                 <tr>
                     <td @click="addCity" class="clickable"><b> + </b></td>
@@ -94,8 +94,8 @@ export default {
                         .then((data) => {
                             let obj_item = {};
                             obj_item.city = newValue[index].city;
-                            obj_item.day_min = data.daily.temperature_2m_min
-                            obj_item.day_max = data.daily.temperature_2m_max
+                            obj_item.day_min = Math.min(...data.daily.temperature_2m_min);
+                            obj_item.day_max = Math.max(...data.daily.temperature_2m_max);
                             this.collected.push(obj_item);
                         })
                 }
@@ -118,14 +118,16 @@ export default {
                 .then((data) => {
                     let obj_item = {};
                     obj_item.city = this.geo[index].city;
-                    obj_item.day_min = data.daily.temperature_2m_min
-                    obj_item.day_max = data.daily.temperature_2m_max
+                    obj_item.day_min = Math.min(...data.daily.temperature_2m_min);
+                    obj_item.day_max = Math.max(...data.daily.temperature_2m_max);
                     this.collected.push(obj_item);
                 })
         }
     },
     methods: {
         sortList(sortBy) {
+
+            let sorted = [];
 
             if (sortBy === 'city') {
                 this.chosenColumn = 'city'
@@ -147,12 +149,13 @@ export default {
             }
 
             if (this.sortedbyASC) {
-                this.collected.sort((x, y) => (x[sortBy] > y[sortBy] ? -1 : 1));
+                sorted = this.collected.sort((x, y) => (x[sortBy] > y[sortBy] ? -1 : 1));
                 this.sortedbyASC = false;
             } else {
-                this.collected.sort((x, y) => (x[sortBy] < y[sortBy] ? -1 : 1));
+                sorted = this.collected.sort((x, y) => (x[sortBy] < y[sortBy] ? -1 : 1));
                 this.sortedbyASC = true;
             }
+            this.collected = sorted;
         },
         addCity() {
             this.adding = !this.adding
