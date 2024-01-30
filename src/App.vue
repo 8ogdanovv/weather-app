@@ -7,7 +7,7 @@
       <DataTable />
     </header>
     <footer>
-      <h3>2022 &copy; Vadym (Alex-Briz) Chervoniak specially for FrontCo · Ukraine</h3>
+      <h3>(&ccaron;) {{ new Date().getFullYear() }} Bogdanov (<a href="http://8ogdanovv.github.io">8ogdanovv</a>) Vadim specially for FrontCo · Ukraine</h3>
     </footer>
   </div>
 </template>
